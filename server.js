@@ -1,9 +1,12 @@
 var http = require("http");
+var jade = require("jade");
 
 const PORT = 8080;
 
+var index = jade.compileFile("template/index.jade");
+
 function handle_request(request, response){
-	response.end("It works! Path hit:" + request.url);
+	response.end(index());
 }
 
 var server = http.createServer(handle_request);
