@@ -1,0 +1,17 @@
+nginx:
+        image: "nginx"
+        links:
+                - "node:node"
+        ports:
+                - "8080:80"
+                - "8081:443"
+        volumes:
+                - "../assests/:/usr/share/nginx/html/assests/:ro"
+                - "./nginx.conf:/etc/nginx/nginx.conf:ro"
+
+node:
+        image: "node:4"
+        working_dir: "/usr/src/app"
+        command: "npm start"
+        volumes:
+                - "..:/usr/src/app"

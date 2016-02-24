@@ -1,0 +1,26 @@
+{
+  "name": "jade-poc",
+  "version": "0.1.0",
+  "description": "Jade template engine POC",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jvanz/jade-poc.git"
+  },
+  "keywords": [
+    "jade",
+    "api"
+  ],
+  "author": "José Guilherme vanz",
+  "license": "GNU",
+  "bugs": {
+    "url": "https://github.com/jvanz/jade-poc/issues"
+  },
+  "dependencies": {
+    "jade": "~1.11.0"
+  }
+}
