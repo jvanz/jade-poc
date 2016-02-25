@@ -1,12 +1,9 @@
 swagger: "2.0"
 info:
-  version: "0.0.1"
+  version: "0.9.0"
   title: Jade POC App
-# during dev, should point to your local machine
-host: localhost:10010
-# basePath prefixes all resource paths 
-basePath: /
-# 
+# basePath prefixes all resource paths
+basePath: /api/0.9.0
 schemes:
   # tip: remove http to make production-grade
   - http
@@ -49,6 +46,33 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /user:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: user
+    get:
+      description: Returns user info
+      # used as the method name of the controller
+      operationId: user
+      parameters:
+        - name: id
+          in: query
+          description: User's ID
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: array
+            items:
+              # a pointer to a definition
+              $ref: "#/definitions/User"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
 # complex objects have schema definitions
 definitions:
   Device:
@@ -63,6 +87,18 @@ definitions:
       description:
         type: string
       ip:
+        type: string
+  User:
+    required:
+      - id
+      - name
+      - profile
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      profile:
         type: string
   ErrorResponse:
     required:

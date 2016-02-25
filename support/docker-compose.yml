@@ -2,6 +2,7 @@ nginx:
         image: "nginx"
         links:
                 - "node:node"
+                - "api:api"
         ports:
                 - "8080:80"
                 - "8081:443"
@@ -15,3 +16,9 @@ node:
         command: "npm start"
         volumes:
                 - "..:/usr/src/app"
+api:
+        image: "node:4"
+        working_dir: "/usr/src/app"
+        command: "./node_modules/swagger/bin/swagger.js project start"
+        volumes:
+                - "../api:/usr/src/app"
