@@ -5,15 +5,19 @@ html(lang="en")
 			meta(charset="UTF-8")
 			block title
 				title Jade Poc
-		link(href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css",
-			rel="stylesheet", text="text/css", crossorigin="anonymous"
-			integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7")
-		link(href="//cdn.datatables.net/1.10.11/css/jquery.dataTables.css",
-			rel="stylesheet", text="text/css")
-		script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
-			integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-			crossorigin="anonymous")
-		script(src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.js" charset="utf8")
+			link(href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css",
+				rel="stylesheet", text="text/css", crossorigin="anonymous"
+				integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7")
+			link(href="//cdn.datatables.net/1.10.11/css/jquery.dataTables.css",
+				rel="stylesheet", text="text/css")
+			script(src="//code.jquery.com/jquery-1.12.1.min.js" charsejquery-2.2.1.min.jst="utf8")
+			script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+				integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+				crossorigin="anonymous")
+			script(src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.js" charset="utf8")
+			script(src="/assests/js/common.js" charset="utf8")
+
 	body
+		block header
 		block content
 		block footer

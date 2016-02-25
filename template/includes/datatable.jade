@@ -1,2 +1,8 @@
-block command_line
+include ./command_line.jade
 table#table
+	thead
+		tr
+			each value in table.columns
+				th #{value}
+	tbody
+	tfoot

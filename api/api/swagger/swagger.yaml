@@ -21,7 +21,7 @@ paths:
     get:
       description: Returns devices info
       # used as the method name of the controller
-      operationId: device_info
+      operationId: get_device
       parameters:
         - name: id
           in: query
@@ -52,7 +52,7 @@ paths:
     get:
       description: Returns user info
       # used as the method name of the controller
-      operationId: user
+      operationId: get_user
       parameters:
         - name: id
           in: query

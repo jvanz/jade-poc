@@ -25,7 +25,7 @@ var util = require('util');
   we specify that in the exports of this module that 'hello' maps to the function named 'hello'
  */
 module.exports = {
-  get_device: get
+  get_user: get
 };
 
 /*
@@ -35,53 +35,24 @@ module.exports = {
   Param 2: a handle to the response object
  */
 
-var devices = [
+var users = [
 	{
-		id: 1232145,
-		type: 0,
-		description: "device 0",
-		ip: "127.0.0.1"
+		id: "id",
+		name: "name",
+		profile: "profile"
 	},
 	{
-		id: 9898,
-		type: 0,
-		description: "device",
-		ip: "127.0.0.1"
+		id: "id",
+		name: "name",
+		profile: "profile"
 	},
 	{
-		id: 98361561,
-		type: 1,
-		description: "device",
-		ip: "127.0.0.1"
-	},
-	{
-		id: 5124423,
-		type: 2,
-		description: "device",
-		ip: "127.0.0.1"
-	},
-	{
-		id: 129821,
-		type: 3,
-		description: "device",
-		ip: "127.0.0.1"
+		id: "id",
+		name: "name",
+		profile: "profile"
 	}
-];
+]
 
 function get(req, res) {
-	if(Object.keys(req.query).length === 0) {
-  		res.json(devices);
-	} else {
-		var return_dev = [];
-		console.log(JSON.stringify(req.query));
-		for( var i in devices){
-			var dev = devices[i];
-			if(dev.type === parseInt(req.query.type))
-				return_dev.push(dev);
-			else if(dev.id === parseInt(req.query.id ))
-				return_dev.push(dev);
-		}
-		// this sends back a JSON response which is a single string
-		res.json(return_dev);
-	}
+	res.json(users);
 }
