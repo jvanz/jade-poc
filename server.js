@@ -1,18 +1,48 @@
 var http = require("http");
-var jade = require("jade");
+var express = require("express");
+var api = require("./api_client");
+var app = express();
 
-const PORT = 8080;
+app.set("views", "./template");
+app.set("view engine", "jade");
 
-var index = jade.compileFile("template/index.jade");
+app.get("/", function(req, res){
+	headers = [ {id: "users", name: "users"}, {id: "devices", name: "devices"}];
+	var columns = ["id", "name", "profile"];
+	var users = api.get_user();
+	var data = [];
+	for (var u in users){
+		var user = users[u];
+		var cdata = [];
+		for (var f in user){
+			cdata.push(user[f]);
+		}
+		data.push(cdata);
+	}
+	res.render("index", {headers: headers, table: {columns: columns, data: data}});
+});
 
-function handle_request(request, response){
-	console.log("Hit path:", request.url);
-	headers = ["users", "users","users","users","users","users"];
-	user_columns = ["id", "name", "profile"];
-	response.end(index({headers: headers, table: {columns: user_columns}}));
-}
+app.get("/devices", function(req, res){
+	var columns = ["id", "type", "description", "ip"];
+	var data = api.get_device();
+	res.render("includes/datatable", {table: {columns: columns, data: data}});
+});
 
-var server = http.createServer(handle_request);
-server.listen(PORT, function(){
-	console.log("Server listening on http://0.0.0.0:%d",PORT);
+app.get("/users", function(req, res){
+	var columns = ["id", "name", "profile"];
+	var users = api.get_user();
+	var data = [];
+	for (var u in users){
+		var user = users[u];
+		var cdata = [];
+		for (var f in user){
+			cdata.push(user[f]);
+		}
+		data.push(cdata);
+	}
+	res.render("includes/datatable", {table: {columns: columns, data: data}});
+});
+
+app.listen(80, function () {
+	  console.log('Listening on port 80!');
 });

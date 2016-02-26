@@ -2,7 +2,11 @@ include ./command_line.jade
 table#table
 	thead
 		tr
-			each value in table.columns
+			for value in table.columns
 				th #{value}
 	tbody
+	for row in table.data
+		tr
+			for col in row
+				th = col
 	tfoot

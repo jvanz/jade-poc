@@ -21,6 +21,7 @@
     "url": "https://github.com/jvanz/jade-poc/issues"
   },
   "dependencies": {
-    "jade": "~1.11.0"
+    "jade": "~1.11.0",
+    "express": "~4.13.4"
   }
 }

@@ -1,6 +1,7 @@
 #header.row
-	each value in headers
-		div.col-md-2
-			img(src="assests/image/" + value + ".png")
-			p #{value}
+	each header in headers
+		div(id=header.id, class="col-md-2")
+			a(href="javascript:open_header(" + header + ");")
+				img(src="assests/image/users.png")
+				p= header.name
 
