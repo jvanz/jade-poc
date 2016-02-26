@@ -35,38 +35,16 @@ module.exports = {
   Param 2: a handle to the response object
  */
 
-var devices = [
+var devices = [];
+for(var i = 0; i < 100; ++i){
+	devices.push(
 	{
-		id: 1232145,
-		type: 0,
-		description: "device 0",
+		id: i,
+		type: i % 2 === 0 ? 1 : 2,
+		description: "device-" + i,
 		ip: "127.0.0.1"
-	},
-	{
-		id: 9898,
-		type: 0,
-		description: "device",
-		ip: "127.0.0.1"
-	},
-	{
-		id: 98361561,
-		type: 1,
-		description: "device",
-		ip: "127.0.0.1"
-	},
-	{
-		id: 5124423,
-		type: 2,
-		description: "device",
-		ip: "127.0.0.1"
-	},
-	{
-		id: 129821,
-		type: 3,
-		description: "device",
-		ip: "127.0.0.1"
-	}
-];
+	});
+}
 
 function get(req, res) {
 	if(Object.keys(req.query).length === 0) {

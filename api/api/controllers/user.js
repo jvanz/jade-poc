@@ -35,23 +35,15 @@ module.exports = {
   Param 2: a handle to the response object
  */
 
-var users = [
+var users = [];
+for(var i = 0; i < 100; ++i){
+	users.push(
 	{
-		id: "id",
-		name: "name",
+		id: "id-" + i,
+		name: "name-" + i,
 		profile: "profile"
-	},
-	{
-		id: "id",
-		name: "name",
-		profile: "profile"
-	},
-	{
-		id: "id",
-		name: "name",
-		profile: "profile"
-	}
-]
+	});
+}
 
 function get(req, res) {
 	res.json(users);
