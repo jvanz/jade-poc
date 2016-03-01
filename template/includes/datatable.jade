@@ -5,8 +5,8 @@ table#table
 			for value in table.columns
 				th #{value}
 	tbody
-	for row in table.data
-		tr
-			for col in row
-				th = col
+		for row in table.data
+			tr
+				for col in row
+					th #{col}
 	tfoot
