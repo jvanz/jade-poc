@@ -1,7 +1,7 @@
 #header.row
 	each header in headers
 		div(id=header.id, class="col-md-2")
-			a(href="javascript:open_header(" + header + ");")
+			a(href="javascript:open_header('" + header.id + "', '" + header.endpoint + "');")
 				img(src="assests/image/users.png")
 				p= header.name
 
