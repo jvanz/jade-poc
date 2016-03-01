@@ -2,29 +2,35 @@ var http = require("http");
 
 var options = {
 	host: 'api',
-	port: 10010,
+	port: '10010'
 };
 
-module.exports.get_user = () => {
+module.exports.get_user = (callback) => {
 	options.path = "/api/0.9.0/user";
-	var data;
 	http.get(options, (res) => {
-		data = res.body;
-		res.resume();
+		var data = "";
+		res.on("data", (chunk) => {
+			data += chunk;
+		});
+		res.on("end", () => {
+			callback(JSON.parse(data));
+		});
 	}).on('error', (e) => {
-		data = [];
+		  console.log("problem with request: " + e.message);
 	});
-	return data;
 };
 
-module.exports.get_device = () => {
+module.exports.get_device = (callback) => {
 	options.path = "/api/0.9.0/device";
-	var data;
 	http.get(options, (res) => {
-		data = JSON.parse(res.body);
-		res.resume();
+		var data = "";
+		res.on("data", (chunk) => {
+			data += chunk;
+		});
+		res.on("end", () => {
+			callback(JSON.parse(data));
+		});
 	}).on('error', (e) => {
-		data = [];
+		  console.log("problem with request: " + e.message);
 	});
-	return data;
 };
