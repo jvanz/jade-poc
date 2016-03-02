@@ -7,8 +7,52 @@ app.set("views", "./template");
 app.set("view engine", "jade");
 
 //default headers
-var headers = [ {id: "users", name: "users", endpoint: "/users"},
+const headers = [ {id: "users", name: "users", endpoint: "/users"},
 	{id: "devices", name: "devices", endpoint: "/devices"}];
+
+const user_cmd_line = [
+		{
+			id: "add",
+			label: "Add",
+			endpoint: "/add/user",
+		},
+		{
+			id: "edit",
+			label: "Edit",
+			endpoint: "/edit/user",
+		},
+		{
+			id: "remove",
+			label: "Remove",
+			endpoint: "/api/0.9.0/user",
+		} ];
+
+const device_cmd_line = [
+		{
+			id: "add",
+			label: "Add",
+			endpoint: "/add/device",
+		},
+		{
+			id: "edit",
+			label: "Edit",
+			endpoint: "/edit/device",
+		},
+		{
+			id: "remove",
+			label: "Remove",
+			endpoint: "/api/0.9.0/device",
+		} ];
+
+const form_cmd_line = [
+		{
+			id: "save",
+			label: "Save",
+		},
+		{
+			id: "cancel",
+			label: "Cancel",
+		}];
 
 app.get("/", function(req, res){
 	var columns = ["id", "name", "profile"];
@@ -22,7 +66,8 @@ app.get("/", function(req, res){
 			}
 			data.push(cdata);
 		}
-		res.render("index", {headers: headers, table: {columns: columns, data: data}});
+		res.render("index", {headers: headers, command_line: user_cmd_line,
+			table: {columns: columns, data: data}});
 	});
 });
 
@@ -38,7 +83,7 @@ app.get("/devices", function(req, res){
 			}
 			data.push(cdata);
 		}
-		res.render("includes/datatable", {table: {columns: columns, data: data}});
+		res.render("includes/datatable", {command_line: device_cmd_line,table: {columns: columns, data: data}});
 	});
 });
 
@@ -54,8 +99,24 @@ app.get("/users", function(req, res){
 			}
 			data.push(cdata);
 		}
-		res.render("includes/datatable", {table: {columns: columns, data: data}});
+		res.render("includes/datatable", {command_line: user_cmd_line,table: {columns: columns, data: data}});
 	});
+});
+
+app.get("/edit/user", function(req, res) {
+	res.render("user_form", {command_line: form_cmd_line});
+});
+
+app.get("/add/user", function(req, res) {
+	res.render("user_form", {command_line: form_cmd_line});
+});
+
+app.get("/edit/device", function(req, res) {
+	res.render("user_form", {command_line: form_cmd_line});
+});
+
+app.get("/add/device", function(req, res) {
+	res.render("user_form", {command_line: form_cmd_line});
 });
 
 app.listen(80, function () {

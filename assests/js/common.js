@@ -5,3 +5,9 @@ function open_header(header_id, endpoint){
 		$("#table").DataTable();
 	});
 }
+
+function command(endpoint){
+	$.get(endpoint, function (data) {
+		$("#content").html(data);
+	});
+}

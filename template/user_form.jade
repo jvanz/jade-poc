@@ -1,0 +1,9 @@
+mixin field(label, name)
+	.form-group
+		label(for=name)= label
+		input(id=name, name=name)
+include ./includes/command_line.jade
+div.row
+	form#form
+		+field("Name", "name")
+		+field("Profile", "profile")
