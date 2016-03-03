@@ -14,7 +14,7 @@ const user_cmd_line = [
 		{
 			id: "add",
 			label: "Add",
-			endpoint: "/add/user",
+			endpoint: "/edit/user",
 		},
 		{
 			id: "edit",
@@ -31,7 +31,7 @@ const device_cmd_line = [
 		{
 			id: "add",
 			label: "Add",
-			endpoint: "/add/device",
+			endpoint: "/edit/device",
 		},
 		{
 			id: "edit",
@@ -53,6 +53,30 @@ const form_cmd_line = [
 			id: "cancel",
 			label: "Cancel",
 		}];
+
+const user_form_field = [
+	{
+		name: "name",
+		label: "Name"
+	},
+	{
+		name: "profile",
+		label: "Profile"
+	}];
+
+const device_form_field = [
+	{
+		name: "type",
+		label: "Type"
+	},
+	{
+		name: "description",
+		label: "Description"
+	},
+	{
+		name: "ip",
+		label: "IP"
+	}];
 
 app.get("/", function(req, res){
 	var columns = ["id", "name", "profile"];
@@ -99,24 +123,19 @@ app.get("/users", function(req, res){
 			}
 			data.push(cdata);
 		}
-		res.render("includes/datatable", {command_line: user_cmd_line,table: {columns: columns, data: data}});
+		res.render("includes/datatable", {command_line: user_cmd_line,
+			table: {columns: columns, data: data}});
 	});
 });
 
 app.get("/edit/user", function(req, res) {
-	res.render("user_form", {command_line: form_cmd_line});
-});
-
-app.get("/add/user", function(req, res) {
-	res.render("user_form", {command_line: form_cmd_line});
+	res.render("form", {command_line: form_cmd_line,
+			form_fields: user_form_field});
 });
 
 app.get("/edit/device", function(req, res) {
-	res.render("user_form", {command_line: form_cmd_line});
-});
-
-app.get("/add/device", function(req, res) {
-	res.render("user_form", {command_line: form_cmd_line});
+	res.render("form", {command_line: form_cmd_line,
+			form_fields: device_form_field});
 });
 
 app.listen(80, function () {

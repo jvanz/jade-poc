@@ -1,0 +1,9 @@
+mixin field(field)
+	.form-group
+		label(for=field.name)= field.label
+		input(id=field.name, name=field.name)
+
+include ./includes/command_line.jade
+form#form
+	each field in form_fields
+		+field(field)
