@@ -54,90 +54,113 @@ const form_cmd_line = [
 			label: "Cancel",
 		}];
 
-const user_form_field = [
-	{
-		name: "name",
-		label: "Name"
-	},
-	{
-		name: "profile",
-		label: "Profile"
-	}];
+const user_form ={
+	actions: [{
+			type: "save",
+			label: "Save",
+			endpoint: "/api/0.9.0/user"
+		},{
+			type: "cancel",
+			label: "Cancel",
+			endpoint: "/users"
+		}],
+	fields: [{
+			name: "name",
+			label: "Name",
+			type: "text"
 
-const device_form_field = [
-	{
-		name: "type",
-		label: "Type"
-	},
-	{
-		name: "description",
-		label: "Description"
-	},
-	{
-		name: "ip",
-		label: "IP"
-	}];
+		},{
+			name: "profile",
+			label: "Profile",
+			type: "text"
+
+		},{
+			name: "id",
+			type: "hidden"
+		}]
+};
+
+const device_form ={
+	actions: [{
+			type: "save",
+			label: "Save",
+			endpoint: "/api/0.9.0/device"
+		},{
+			type: "cancel",
+			label: "Cancel",
+			endpoint: "/devices"
+		}],
+	fields: [{
+			name: "type",
+			label: "Type",
+			type: "number"
+		},{
+			name: "description",
+			label: "Description",
+			type: "text"
+		},{
+			name: "ip",
+			label: "IP",
+			type: "text"
+		},{
+			name: "id",
+			type: "hidden"
+		}]
+}
 
 app.get("/", function(req, res){
 	var columns = ["id", "name", "profile"];
 	api.get_user( (users) => {
-		var data = [];
-		for (var u in users){
-			var user = users[u];
-			var cdata = [];
-			for (var f in user){
-				cdata.push(user[f]);
-			}
-			data.push(cdata);
-		}
+		var data = convert_api_to_datatable(users, columns);
 		res.render("index", {headers: headers, command_line: user_cmd_line,
-			table: {columns: columns, data: data}});
+			table: {columns: columns, data: data,
+				init_datatable: false}});
 	});
 });
 
 app.get("/devices", function(req, res){
 	var columns = ["id", "type", "description", "ip"];
 	api.get_device((devices) => {
-		var data = [];
-		for (var u in devices){
-			var device = devices[u];
-			var cdata = [];
-			for (var f in device){
-				cdata.push(device[f]);
-			}
-			data.push(cdata);
-		}
-		res.render("includes/datatable", {command_line: device_cmd_line,table: {columns: columns, data: data}});
+		var data = convert_api_to_datatable(devices, columns);
+		res.render("includes/datatable", {command_line: device_cmd_line,
+			table: {columns: columns, data: data,
+				init_datatable: true}});
 	});
 });
 
 app.get("/users", function(req, res){
 	var columns = ["id", "name", "profile"];
 	api.get_user( (users) => {
-		var data = [];
-		for (var u in users){
-			var user = users[u];
-			var cdata = [];
-			for (var f in user){
-				cdata.push(user[f]);
-			}
-			data.push(cdata);
-		}
+		var data = convert_api_to_datatable(users, columns);
 		res.render("includes/datatable", {command_line: user_cmd_line,
-			table: {columns: columns, data: data}});
+			table: {columns: columns, data: data,
+				init_datatable: true}});
 	});
 });
 
 app.get("/edit/user", function(req, res) {
 	res.render("form", {command_line: form_cmd_line,
-			form_fields: user_form_field});
+			form: user_form });
 });
 
 app.get("/edit/device", function(req, res) {
 	res.render("form", {command_line: form_cmd_line,
-			form_fields: device_form_field});
+			form: device_form });
 });
 
 app.listen(80, function () {
 	  console.log('Listening on port 80!');
 });
+
+function convert_api_to_datatable(api_data, columns){
+	var data = [];
+	for (var u in api_data){
+		var entity = api_data[u];
+		var cdata = [];
+		for (var c in columns){
+			cdata.push(entity[columns[c]]);
+		}
+		data.push(cdata);
+	}
+	return data;
+}

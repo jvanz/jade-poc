@@ -1,4 +1,7 @@
 include ./command_line.jade
+	if table.init_datatable
+		script(type="text/javascript").
+			$("#table").DataTable();
 table#table
 	thead
 		tr

@@ -1,9 +1,13 @@
 mixin field(field)
 	.form-group
 		label(for=field.name)= field.label
-		input(id=field.name, name=field.name)
+		input(id=field.name, name=field.name, type=field.type)
 
-include ./includes/command_line.jade
+#actions.row
+	each action in form.actions
+		button(id=action.type, class="btn btn-default col-md-4",
+		onclick="javascript:form_action('" + action.type + "', '" +
+		action.endpoint + "')") #{action.label}
 form#form
-	each field in form_fields
+	each field in form.fields
 		+field(field)

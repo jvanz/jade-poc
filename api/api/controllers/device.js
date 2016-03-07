@@ -66,7 +66,7 @@ function get(req, res) {
 
 function add(req, res){
 	var data = req.body;
-	data.id = "id-" + devices.length;
+	data.id = devices.length
 	devices.push(data);
 	res.status(200).end();
 }
