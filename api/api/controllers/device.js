@@ -25,7 +25,9 @@ var util = require('util');
   we specify that in the exports of this module that 'hello' maps to the function named 'hello'
  */
 module.exports = {
-  get_device: get
+  get_device: get,
+  add_device: add,
+  delete_device: delete_device
 };
 
 /*
@@ -37,8 +39,7 @@ module.exports = {
 
 var devices = [];
 for(var i = 0; i < 100; ++i){
-	devices.push(
-	{
+	devices.push({
 		id: i,
 		type: i % 2 === 0 ? 1 : 2,
 		description: "device-" + i,
@@ -51,7 +52,6 @@ function get(req, res) {
   		res.json(devices);
 	} else {
 		var return_dev = [];
-		console.log(JSON.stringify(req.query));
 		for( var i in devices){
 			var dev = devices[i];
 			if(dev.type === parseInt(req.query.type))
@@ -62,4 +62,15 @@ function get(req, res) {
 		// this sends back a JSON response which is a single string
 		res.json(return_dev);
 	}
+}
+
+function add(req, res){
+	var data = req.body;
+	data.id = "id-" + devices.length;
+	devices.push(data);
+	res.status(200).end();
+}
+
+function delete_device(req, res){
+	res.status(200).end();
 }

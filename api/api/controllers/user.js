@@ -25,7 +25,9 @@ var util = require('util');
   we specify that in the exports of this module that 'hello' maps to the function named 'hello'
  */
 module.exports = {
-  get_user: get
+  get_user: get,
+  add_user: add,
+  delete_user: delete_user
 };
 
 /*
@@ -37,8 +39,7 @@ module.exports = {
 
 var users = [];
 for(var i = 0; i < 100; ++i){
-	users.push(
-	{
+	users.push({
 		id: "id-" + i,
 		name: "name-" + i,
 		profile: "profile"
@@ -47,4 +48,15 @@ for(var i = 0; i < 100; ++i){
 
 function get(req, res) {
 	res.json(users);
+}
+
+function add(req, res){
+	var data = req.body;
+	data.id = "id-" + users.length;
+	users.push(data);
+	res.status(200).end();
+}
+
+function delete_user(req, res){
+	res.status(200).end();
 }

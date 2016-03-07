@@ -8,12 +8,6 @@ schemes:
   # tip: remove http to make production-grade
   - http
   - https
-# format of bodies a client can send (Content-Type)
-consumes:
-  - application/json
-# format of the responses to the client (Accepts)
-produces:
-  - application/json
 paths:
   /device:
     # binds a127 app logic to a route
@@ -22,6 +16,8 @@ paths:
       description: Returns devices info
       # used as the method name of the controller
       operationId: get_device
+      produces:
+        - application/json
       parameters:
         - name: id
           in: query
@@ -45,7 +41,43 @@ paths:
         default:
           description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: "#/definitions/StatusResponse"
+    post:
+      description: Add or device
+      operationId: add_device
+      consumes: 
+        - application/json
+      parameters:
+        - name: device
+          in: body
+          description: device to add 
+          required: true
+          schema:
+            $ref: "#/definitions/Device"
+      responses:
+        "200":
+          description: Success
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/StatusResponse"
+    delete:
+      description: Delete device
+      operationId: delete_device
+      parameters:
+        - name: device_id
+          description: Device's id should be removed
+          in: query
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/StatusResponse"
   /user:
     # binds a127 app logic to a route
     x-swagger-router-controller: user
@@ -53,6 +85,8 @@ paths:
       description: Returns user info
       # used as the method name of the controller
       operationId: get_user
+      produces: 
+        - application/json
       parameters:
         - name: id
           in: query
@@ -71,8 +105,44 @@ paths:
         default:
           description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
-
+            $ref: "#/definitions/StatusResponse"
+    post:
+      description: Add user
+      operationId: add_user
+      consumes: 
+        - application/json
+      parameters:
+        - name: user
+          in: body
+          description: user to add 
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        "200":
+          description: Success
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/StatusResponse"
+    delete:
+      description: Delete user
+      operationId: delete_user
+      parameters:
+        - name: user_id
+          description: User's id should be removed
+          in: query
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/StatusResponse"
+            
 # complex objects have schema definitions
 definitions:
   Device:
@@ -100,7 +170,7 @@ definitions:
         type: string
       profile:
         type: string
-  ErrorResponse:
+  StatusResponse:
     required:
       - message
       - code
