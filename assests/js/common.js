@@ -22,10 +22,10 @@ function command(endpoint){
 
 function form_action(type, endpoint){
 	if ("save" === type){
-		$.postJSON(endpoint, $("#form").toObject({skipEmpty: false}),
-				function(data){
-					console.log("form submitted!");
-				});
+		$.postJSON(endpoint, $("#form").serializeJSON(),
+			function(data){
+				console.log("form submitted!");
+			});
 	} else if ("cancel" === type){
 		$.get(endpoint, function (data) {
 			$("#content").html(data);

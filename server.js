@@ -75,7 +75,7 @@ const user_form ={
 			type: "text"
 
 		},{
-			name: "id",
+			name: "id:number",
 			type: "hidden"
 		}]
 };
@@ -91,7 +91,7 @@ const device_form ={
 			endpoint: "/devices"
 		}],
 	fields: [{
-			name: "type",
+			name: "type:number",
 			label: "Type",
 			type: "number"
 		},{
@@ -103,18 +103,21 @@ const device_form ={
 			label: "IP",
 			type: "text"
 		},{
-			name: "id",
+			name: "id:number",
 			type: "hidden"
 		}]
 }
 
 app.get("/", function(req, res){
 	var columns = ["id", "name", "profile"];
-	api.get_user( (users) => {
+	api.get_user((users) => {
 		var data = convert_api_to_datatable(users, columns);
 		res.render("index", {headers: headers, command_line: user_cmd_line,
 			table: {columns: columns, data: data,
 				init_datatable: false}});
+	}, () => {
+		res.render("index", {headers: headers, command_line: user_cmd_line,
+			table: {columns: columns, init_datatable: false}});
 	});
 });
 
@@ -125,6 +128,8 @@ app.get("/devices", function(req, res){
 		res.render("includes/datatable", {command_line: device_cmd_line,
 			table: {columns: columns, data: data,
 				init_datatable: true}});
+	}, () => {
+
 	});
 });
 
@@ -135,6 +140,8 @@ app.get("/users", function(req, res){
 		res.render("includes/datatable", {command_line: user_cmd_line,
 			table: {columns: columns, data: data,
 				init_datatable: true}});
+	}, () => {
+
 	});
 });
 
