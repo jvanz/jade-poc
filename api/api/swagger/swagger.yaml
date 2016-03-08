@@ -66,7 +66,7 @@ paths:
       description: Delete device
       operationId: delete_device
       parameters:
-        - name: device_id
+        - name: id
           description: Device's id should be removed
           in: query
           required: true
@@ -130,7 +130,7 @@ paths:
       description: Delete user
       operationId: delete_user
       parameters:
-        - name: user_id
+        - name: id
           description: User's id should be removed
           in: query
           required: true

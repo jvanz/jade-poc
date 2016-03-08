@@ -58,5 +58,16 @@ function add(req, res){
 }
 
 function delete_user(req, res){
-	res.status(200).end();
+	if(Object.keys(req.query).length === 0) {
+		res.status(400).end();
+	} else {
+		for( var i in users){
+			var user = users[i];
+			if(user.id === parseInt(req.query.id )){
+				users.splice(i, 1);
+				res.status(200).end();
+			}
+		}
+	}
+	res.status(400).end();
 }

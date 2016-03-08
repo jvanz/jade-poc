@@ -72,5 +72,16 @@ function add(req, res){
 }
 
 function delete_device(req, res){
-	res.status(200).end();
+	if(Object.keys(req.query).length === 0) {
+		res.status(400).end();
+	} else {
+		for( var i in devices){
+			var device = devices[i];
+			if(device.id === parseInt(req.query.id )){
+				devices.splice(i, 1);
+				res.status(200).end();
+			}
+		}
+	}
+	res.status(400).end();
 }
