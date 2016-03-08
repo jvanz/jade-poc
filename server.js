@@ -14,16 +14,19 @@ const user_cmd_line = [
 		{
 			id: "add",
 			label: "Add",
+			type: "add",
 			endpoint: "/edit/user",
 		},
 		{
 			id: "edit",
 			label: "Edit",
+			type: "edit",
 			endpoint: "/edit/user",
 		},
 		{
 			id: "remove",
 			label: "Remove",
+			type: "remove",
 			endpoint: "/api/0.9.0/user",
 		} ];
 
@@ -31,16 +34,19 @@ const device_cmd_line = [
 		{
 			id: "add",
 			label: "Add",
+			type: "add",
 			endpoint: "/edit/device",
 		},
 		{
 			id: "edit",
 			label: "Edit",
+			type: "edit",
 			endpoint: "/edit/device",
 		},
 		{
 			id: "remove",
 			label: "Remove",
+			type: "remove",
 			endpoint: "/api/0.9.0/device",
 		} ];
 

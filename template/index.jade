@@ -3,7 +3,7 @@ extends ./base.jade
 block append head
 	script(type="text/javascript").
 		$(document).ready(function() {
-			$("#table").DataTable();
+			init_datatable();
 		});
 block header
 	include ./includes/header.jade

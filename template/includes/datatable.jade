@@ -1,15 +1,16 @@
 include ./command_line.jade
 	if table.init_datatable
 		script(type="text/javascript").
-			$("#table").DataTable();
+			init_datatable();
 table#table
 	thead
 		tr
 			for value in table.columns
 				th #{value}
 	tbody
-		for row in table.data
-			tr
-				for col in row
-					th #{col}
+		if table.data
+			for row in table.data
+				tr
+					for col in row
+						th #{col}
 	tfoot

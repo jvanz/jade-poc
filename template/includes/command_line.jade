@@ -1,4 +1,5 @@
 #command_line.row
 	each command in command_line
 		button(id=command.id, class="btn btn-default col-md-4",
-		onclick="javascript:command('" + command.endpoint + "')") #{command.label}
+		onclick="javascript:command('" + command.type + "','" +
+			command.endpoint + "')") #{command.label}
