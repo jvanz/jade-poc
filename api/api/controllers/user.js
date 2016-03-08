@@ -40,7 +40,7 @@ module.exports = {
 var users = [];
 for(var i = 0; i < 100; ++i){
 	users.push({
-		id: "id-" + i,
+		id: i,
 		name: "name-" + i,
 		profile: "profile"
 	});
@@ -52,7 +52,7 @@ function get(req, res) {
 
 function add(req, res){
 	var data = req.body;
-	data.id = "id-" + users.length;
+	data.id = users.length;
 	users.push(data);
 	res.status(200).end();
 }

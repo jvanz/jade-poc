@@ -92,7 +92,7 @@ paths:
           in: query
           description: User's ID
           required: false
-          type: string
+          type: integer
       responses:
         "200":
           description: Success
@@ -165,7 +165,7 @@ definitions:
       - profile
     properties:
       id:
-        type: string
+        type: integer
       name:
         type: string
       profile:
