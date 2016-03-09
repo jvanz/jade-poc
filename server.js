@@ -131,7 +131,7 @@ app.get("/devices", function(req, res){
 	var columns = ["id", "type", "description", "ip"];
 	api.get_device((devices) => {
 		var data = convert_api_to_datatable(devices, columns);
-		res.render("includes/datatable", {command_line: device_cmd_line,
+		res.render("datatable", {command_line: device_cmd_line,
 			table: {columns: columns, data: data,
 				init_datatable: true}});
 	}, () => {
@@ -143,7 +143,7 @@ app.get("/users", function(req, res){
 	var columns = ["id", "name", "profile"];
 	api.get_user( (users) => {
 		var data = convert_api_to_datatable(users, columns);
-		res.render("includes/datatable", {command_line: user_cmd_line,
+		res.render("datatable", {command_line: user_cmd_line,
 			table: {columns: columns, data: data,
 				init_datatable: true}});
 	}, () => {

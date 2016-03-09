@@ -1,4 +1,4 @@
-extends ./base.jade
+extends base.jade
 
 block append head
 	script(type="text/javascript").
@@ -6,8 +6,8 @@ block append head
 			init_datatable();
 		});
 block header
-	include ./includes/header.jade
+	include header.jade
 block content
 	#content
-		include ./includes/datatable.jade
+		include datatable.jade
 
