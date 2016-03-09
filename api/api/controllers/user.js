@@ -47,7 +47,18 @@ for(var i = 0; i < 100; ++i){
 }
 
 function get(req, res) {
-	res.json(users);
+	if(Object.keys(req.query).length === 0) {
+  		res.json(users);
+	} else {
+		var return_user = [];
+		for( var i in users){
+			var user = users[i];
+			if(user.id === parseInt(req.query.id ))
+				return_user.push(user);
+		}
+		// this sends back a JSON response which is a single string
+		res.json(return_user);
+	}
 }
 
 function add(req, res){
