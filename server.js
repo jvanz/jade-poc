@@ -71,16 +71,19 @@ const user_form ={
 			endpoint: "/users"
 		}],
 	fields: [{
+			id: "name",
 			name: "name",
 			label: "Name",
 			type: "text"
 
 		},{
+			id: "profile",
 			name: "profile",
 			label: "Profile",
 			type: "text"
 
 		},{
+			id: "id",
 			name: "id:number",
 			type: "hidden"
 		}]
@@ -97,18 +100,22 @@ const device_form ={
 			endpoint: "/devices"
 		}],
 	fields: [{
+			id: "type",
 			name: "type:number",
 			label: "Type",
 			type: "number"
 		},{
+			id: "description",
 			name: "description",
 			label: "Description",
 			type: "text"
 		},{
+			id: "ip",
 			name: "ip",
 			label: "IP",
 			type: "text"
 		},{
+			id: "id",
 			name: "id:number",
 			type: "hidden"
 		}]
@@ -135,7 +142,7 @@ app.get("/devices", function(req, res){
 			table: {columns: columns, data: data,
 				init_datatable: true}});
 	}, () => {
-
+		//TODO
 	});
 });
 
@@ -147,18 +154,40 @@ app.get("/users", function(req, res){
 			table: {columns: columns, data: data,
 				init_datatable: true}});
 	}, () => {
-
+		//TODO
 	});
 });
 
 app.get("/edit/user", function(req, res) {
-	res.render("form", {command_line: form_cmd_line,
-			form: user_form });
+	if (parseInt(req.query.id)){
+		api.get_user( (users) => {
+			user_form["data"] = users[0];
+			res.render("form", {command_line: form_cmd_line,
+					form: user_form });
+			delete user_form["data"];
+		}, () => {
+			//TODO
+		}, req.query.id);
+	} else {
+		res.render("form", {command_line: form_cmd_line,
+				form: user_form });
+	}
 });
 
 app.get("/edit/device", function(req, res) {
-	res.render("form", {command_line: form_cmd_line,
-			form: device_form });
+	if (parseInt(req.query.id)){
+		api.get_device((devices) => {
+			device_form["data"] = devices[0];
+			res.render("form", {command_line: form_cmd_line,
+					form: device_form });
+			delete device_form["data"];
+		}, () => {
+			//TODO
+		}, req.query.id);
+	} else {
+		res.render("form", {command_line: form_cmd_line,
+				form: device_form });
+	}
 });
 
 app.listen(80, function () {

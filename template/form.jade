@@ -1,7 +1,13 @@
-mixin field(field)
+mixin field(field, data)
 	.form-group
-		label(for=field.name)= field.label
-		input(id=field.name, name=field.name, type=field.type)
+		label(for=field.id)= field.label
+		input(id=field.id, name=field.name, type=field.type)
+
+mixin fieldWithValue(field, data)
+	.form-group
+		label(for=field.id)= field.label
+			input(id=field.id, name=field.name, type=field.type,
+				value=data[field.id])
 
 #actions.row
 	each action in form.actions
@@ -10,4 +16,7 @@ mixin field(field)
 		action.endpoint + "')") #{action.label}
 form#form
 	each field in form.fields
-		+field(field)
+		unless form.data
+			+field(field, form.data)
+		else
+			+fieldWithValue(field, form.data)

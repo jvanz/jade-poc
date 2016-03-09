@@ -28,7 +28,10 @@ function command(command, endpoint){
 			table.row(".selected").remove().draw(false);
 		});
 	} else if ("edit" === command){
-
+		var id = $("#table").DataTable().row(".selected").data()[0];
+		$.get(endpoint + "?id=" + id, function (data) {
+			$("#content").html(data);
+		});
 	} else if ("add" === command){
 		$.get(endpoint, function (data) {
 			$("#content").html(data);
