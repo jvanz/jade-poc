@@ -63,9 +63,20 @@ function get(req, res) {
 
 function add(req, res){
 	var data = req.body;
-	data.id = users.length;
-	users.push(data);
-	res.status(200).end();
+	if (data.id){
+		for( var i in users){
+			var user = users[i];
+			if (user.id === data.id){
+				users[i] = data;
+				break;
+			}
+		}
+		res.status(200).end();
+	} else {
+		data.id = users.length;
+		users.push(data);
+		res.status(200).end();
+	}
 }
 
 function delete_user(req, res){

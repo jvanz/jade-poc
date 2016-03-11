@@ -66,9 +66,20 @@ function get(req, res) {
 
 function add(req, res){
 	var data = req.body;
-	data.id = devices.length
-	devices.push(data);
-	res.status(200).end();
+	if (data.id){
+		for( var i in devices){
+			var dev = devices[i];
+			if (dev.id === data.id){
+				devices[i] = data;
+				break;
+			}
+		}
+		res.status(200).end();
+	} else {
+		data.id = devices.length
+		devices.push(data);
+		res.status(200).end();
+	}
 }
 
 function delete_device(req, res){
