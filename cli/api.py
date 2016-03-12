@@ -11,3 +11,13 @@ def get_device(id=None):
 	url = api_url + "/device"
 	response = requests.get(url, params={"id": id})
 	return response.json()
+
+def edit_device(payload):
+	url = api_url + "/device"
+	response = requests.post(url, data=payload)
+	return response.status_code == 200
+
+def edit_user(payload):
+	url = api_url + "/user"
+	response = requests.post(url, data=payload)
+	return response.status_code == 200
