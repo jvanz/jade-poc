@@ -1,4 +1,5 @@
 import requests
+import logging
 
 api_url = "http://localhost:8080/api/0.9.0"
 
