@@ -13,6 +13,7 @@ class Screen:
 	def __init__(self, stdscr):
 		curses.init_pair(1, curses.COLOR_RED, curses.COLOR_WHITE)
 		curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_CYAN)
+		curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_BLUE)
 		self.stdscr = stdscr;
 		self.terminated = False
 		stdscr.clear()
@@ -195,7 +196,7 @@ class Table:
 		text = ""
 		for header in self.__data[0].keys():
 			text += header + "\t"
-		self.win.addstr(line, 2, text)
+		self.win.addstr(line, 2, text, curses.color_pair(3))
 		line += 1
 		# add table rows
 		first_line = self.__page * self.__rows_per_page
