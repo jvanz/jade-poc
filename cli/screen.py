@@ -127,7 +127,7 @@ class MenuItem:
 
 class Table:
 	"""Class to handle a table to show data"""
-	__rows_page = 30
+	__rows_per_page = 50
 	__add_key = ord("a")
 	__edit_key = ord("e")
 	__del_key = ord("d")
@@ -136,6 +136,8 @@ class Table:
 		self.__screen = screen
 		self.__data = None
 		self.__selected_row = 0
+		self.__page = 0
+		self.__total_pages = 0
 		self.win = curses.newwin(0, 0)
 		self.win.box()
 		self.panel = panel.new_panel(self.win)
@@ -143,6 +145,8 @@ class Table:
 
 	def refresh_data(self, data):
 		self.__data = data()
+		self.__total_pages = len(self.__data) / self.__rows_per_page
+		self.__page = 0
 		self.__draw()
 
 	def show(self):
@@ -165,6 +169,14 @@ class Table:
 			if self.__selected_row - 1 >= 0:
 				self.__selected_row -=  1
 				self.__draw()
+		if curses.KEY_LEFT == key:
+			if self.__page - 1 >= 0:
+				self.__page -= 1
+				self.__draw()
+		elif curses.KEY_RIGHT == key:
+			if self.__page + 1 < self.__total_pages:
+				self.__page += 1
+				self.__draw()
 		elif self.__add_key == key:
 			pass
 		elif self.__edit_key == key:
@@ -186,21 +198,19 @@ class Table:
 		self.win.addstr(line, 2, text)
 		line += 1
 		# add table rows
-		last_row = 0
-		for row in self.__data:
+		first_line = self.__page * self.__rows_per_page
+		current_row = first_line
+		for row in self.__data[first_line: first_line + self.__rows_per_page]:
 			text = ""
 			for value in row.values():
 				text += str(value) + "\t"
-			if last_row == self.__selected_row:
+			if current_row == self.__selected_row:
 				self.win.addstr(line, 2, text,
-						curses.color_pair(1))
+					curses.color_pair(1))
 			elif line % 2 == 0:
 				self.win.addstr(line, 2, text,
 						curses.color_pair(2))
 			else:
 				self.win.addstr(line, 2, text)
 			line += 1
-			if line == self.win.getmaxyx()[0]-1:
-				return
-			else:
-				last_row += 1
+			current_row += 1
