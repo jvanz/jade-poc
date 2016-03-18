@@ -162,7 +162,7 @@ class Table:
 		if key is None:
 			return
 		if curses.KEY_DOWN == key:
-			if self.__selected_row + 1 < len(self.__data):
+			if self.__selected_row + 1 < self.__rows_per_page:
 				self.__selected_row +=  1
 				self.__draw()
 		elif curses.KEY_UP == key:
@@ -199,7 +199,7 @@ class Table:
 		line += 1
 		# add table rows
 		first_line = self.__page * self.__rows_per_page
-		current_row = first_line
+		current_row = 0
 		for row in self.__data[first_line: first_line + self.__rows_per_page]:
 			text = ""
 			for value in row.values():
