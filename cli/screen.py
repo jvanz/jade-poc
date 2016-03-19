@@ -1,7 +1,7 @@
 import curses
 import logging
 from curses  import panel
-from api import get_user, get_device
+from api import get_user, get_device, delete_user, delete_device
 
 
 class Screen:
@@ -43,10 +43,12 @@ class Screen:
 			panel.top_panel().userptr().input_key(key)
 			self.__update()
 
-	def show_table(self, data):
+	def show_table(self, data_function, remove_function):
 		logging.debug("show_table")
 		self.hide_menu()
-		self.table.refresh_data(data)
+		self.table.data_function = data_function
+		self.table.remove_function = remove_function
+		self.table.refresh_data()
 		self.table.show()
 
 	def __update(self):
@@ -68,8 +70,8 @@ class Menu:
 		self.__screen = screen
 		self.win = curses.newwin(int(y), int(x), 0, 0)
 		self.win.box()
-		self.__options = [MenuItem("User", get_user),
-				MenuItem("Devices", get_device)]
+		self.__options = [MenuItem("User", get_user, delete_user),
+				MenuItem("Devices", get_device, delete_device)]
 		self.__current_focus = 0
 		self.__draw_options()
 		self.panel = panel.new_panel(self.win)
@@ -114,17 +116,18 @@ class Menu:
 		elif curses.KEY_DOWN == key:
 			self.select(self.__current_focus-1)
 		elif curses.KEY_ENTER == key or 10 == key or 13 == key:
-			self.__screen.show_table(
-				self.__options[self.__current_focus]
-				.data_function)
+			option = self.__options[self.__current_focus]
+			self.__screen.show_table(option.data_function,
+					option.remove_function)
 
 class MenuItem:
 	"""Class to store menu items data"""
 
-	def __init__(self, text, fetch_data_function):
+	def __init__(self, text, fetch_data_function, remove_function):
 		self.text = text
 		self.focus = False
 		self.data_function = fetch_data_function
+		self.remove_function = remove_function
 
 class Table:
 	"""Class to handle a table to show data"""
@@ -139,13 +142,15 @@ class Table:
 		self.__selected_row = 0
 		self.__page = 0
 		self.__total_pages = 0
+		self.data_function = None
+		self.remove_function = None
 		self.win = curses.newwin(0, 0)
 		self.win.box()
 		self.panel = panel.new_panel(self.win)
 		self.panel.set_userptr(self)
 
-	def refresh_data(self, data):
-		self.__data = data()
+	def refresh_data(self):
+		self.__data = self.data_function()
 		self.__total_pages = len(self.__data) / self.__rows_per_page
 		self.__page = 0
 		self.__draw()
@@ -183,15 +188,20 @@ class Table:
 		elif self.__edit_key == key:
 			pass
 		elif self.__del_key == key:
-			pass
+			user = self.__get_selected_user()
+			logging.debug("delete user: " + str(user[1]))
+			if self.remove_function(user[1]):
+				del self.__data[user[0]]
+				self.__draw()
+
 
 	def __draw(self):
-		if self.__data is None:
-			return
 		#add control line
 		line = 1
 		self.win.addstr(line, 2, "[a]dd\t[e]dit\t[d]elete")
 		line += 2
+		if self.__data is None or len(self.__data) == 0:
+			return
 		# adds header
 		text = ""
 		for header in self.__data[0].keys():
@@ -200,8 +210,9 @@ class Table:
 		line += 1
 		# add table rows
 		first_line = self.__page * self.__rows_per_page
+		last_line = first_line + self.__rows_per_page
 		current_row = 0
-		for row in self.__data[first_line: first_line + self.__rows_per_page]:
+		for row in self.__data[first_line: last_line]:
 			text = ""
 			for value in row.values():
 				text += str(value) + "\t"
@@ -215,3 +226,7 @@ class Table:
 				self.win.addstr(line, 2, text)
 			line += 1
 			current_row += 1
+
+	def __get_selected_user(self):
+		index = (self.__page * self.__rows_per_page) + self.__selected_row
+		return (index, self.__data[index])
