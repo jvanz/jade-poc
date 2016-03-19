@@ -15,24 +15,20 @@ class Screen:
 		curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_CYAN)
 		curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_BLUE)
 		self.stdscr = stdscr;
+		self.stdscr.box()
 		self.terminated = False
-		stdscr.clear()
-		stdscr.box()
 		self.menu = Menu(self, self.stdscr.getmaxyx()[0] * .20,
 			self.stdscr.getmaxyx()[1] * .10)
 		self.__center(self.menu.win)
 		self.table = Table(self)
 		self.show_menu()
-		panel.update_panels()
-		self.stdscr.refresh()
+		self.__update()
 
 	def show_menu(self):
 		self.menu.show()
-		self.stdscr.refresh()
 
 	def hide_menu(self):
 		self.menu.hide()
-		self.stdscr.refresh()
 
 	def input_key(self, key):
 		if key is None:
@@ -44,7 +40,6 @@ class Screen:
 			self.__update()
 
 	def show_table(self, data_function, remove_function):
-		logging.debug("show_table")
 		self.hide_menu()
 		self.table.data_function = data_function
 		self.table.remove_function = remove_function
@@ -52,6 +47,8 @@ class Screen:
 		self.table.show()
 
 	def __update(self):
+		self.stdscr.clear()
+		panel.top_panel().userptr().draw()
 		panel.update_panels()
 		self.stdscr.refresh()
 
@@ -73,12 +70,11 @@ class Menu:
 		self.__options = [MenuItem("User", get_user, delete_user),
 				MenuItem("Devices", get_device, delete_device)]
 		self.__current_focus = 0
-		self.__draw_options()
 		self.panel = panel.new_panel(self.win)
 		self.panel.set_userptr(self)
 		self.select()
 
-	def __draw_options(self):
+	def draw(self):
 		index = 1
 		for opt in self.__options:
 			if opt.focus:
@@ -91,11 +87,9 @@ class Menu:
 	def show(self):
 		self.panel.top()
 		self.panel.show()
-		panel.update_panels()
 
 	def hide(self):
 		self.panel.hide()
-		panel.update_panels()
 
 	def select(self, index=0):
 		if index > len(self.__options) - 1:
@@ -103,12 +97,10 @@ class Menu:
 		self.__options[self.__current_focus].focus = False
 		self.__options[index].focus = True
 		self.__current_focus = index
-		self.__draw_options()
 
 
 	def input_key(self, key):
 		"""Handles input keys while menu is the top panel in screen"""
-		logging.debug("enter")
 		if key is None:
 			return
 		if curses.KEY_UP == key:
@@ -153,15 +145,13 @@ class Table:
 		self.__data = self.data_function()
 		self.__total_pages = len(self.__data) / self.__rows_per_page
 		self.__page = 0
-		self.__draw()
 
 	def show(self):
+		self.panel.top()
 		self.panel.show()
-		panel.update_panels()
 
 	def hide(self):
 		self.panel.hide()
-		panel.update_panels()
 
 	def input_key(self, key):
 		"""Handles input keys while menu is the top panel in screen"""
@@ -170,32 +160,30 @@ class Table:
 		if curses.KEY_DOWN == key:
 			if self.__selected_row + 1 < self.__rows_per_page:
 				self.__selected_row +=  1
-				self.__draw()
 		elif curses.KEY_UP == key:
 			if self.__selected_row - 1 >= 0:
 				self.__selected_row -=  1
-				self.__draw()
 		if curses.KEY_LEFT == key:
 			if self.__page - 1 >= 0:
 				self.__page -= 1
-				self.__draw()
 		elif curses.KEY_RIGHT == key:
 			if self.__page + 1 < self.__total_pages:
 				self.__page += 1
-				self.__draw()
 		elif self.__add_key == key:
 			pass
 		elif self.__edit_key == key:
 			pass
 		elif self.__del_key == key:
-			user = self.__get_selected_user()
-			logging.debug("delete user: " + str(user[1]))
-			if self.remove_function(user[1]):
-				del self.__data[user[0]]
-				self.__draw()
+			if len(self.__data) > 0:
+				user = self.__get_selected_user()
+				logging.debug("delete user: " + str(user[1]))
+				if self.remove_function(user[1]):
+					del self.__data[user[0]]
 
 
-	def __draw(self):
+	def draw(self):
+		self.win.clear()
+		self.win.box()
 		#add control line
 		line = 1
 		self.win.addstr(line, 2, "[a]dd\t[e]dit\t[d]elete")
