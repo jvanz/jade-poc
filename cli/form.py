@@ -1,9 +1,11 @@
 import curses
+from curses import panel
 
 class Form:
 	"""Class to handle a form to add/edit data"""
-	def __init__(self, screen, fields):
-		self.__screen = screen
+
+	edit_text_x = 30
+	def __init__(self, fields):
 		self.win = curses.newwin(0, 0)
 		self.panel = panel.new_panel(self.win)
 		self.panel.set_userptr(self)
@@ -21,8 +23,9 @@ class Form:
 		self.win.box()
 		line = 2
 		for field in self.__fields:
-			self.win.addstr(line, 2, field)
-			line += 1
+			self.win.addstr(line, 2, field + ":")
+			self.__make_text_box(1, 20, line, self.edit_text_x)
+			line += 4
 
 
 	def __make_text_box(self, height, width, y, x):
@@ -34,9 +37,9 @@ class Form:
 		return txtbox
 
 class UserForm(Form):
-	def __init__(self, screen):
-		Form.__init__(self, screen, ["name", "profile"])
+	def __init__(self):
+		Form.__init__(self, ["name", "profile"])
 
 class DeviceForm(Form):
-	def __init__(self, screen):
-		Form.__init__(self, screen, ["type", "description", "ip"])
+	def __init__(self):
+		Form.__init__(self, ["type", "description", "ip"])

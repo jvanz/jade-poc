@@ -2,6 +2,7 @@ import curses
 import logging
 from curses import panel
 from api import get_user, get_device, delete_user, delete_device
+from form import UserForm, DeviceForm
 
 class Table:
 	"""Class to handle a table to show data"""
@@ -103,6 +104,7 @@ class UserTable(Table):
 
 	def __init__(self):
 		Table.__init__(self)
+		self.form = UserForm()
 
 	def refresh_data(self):
 		self.data = get_user()
@@ -116,7 +118,7 @@ class UserTable(Table):
 				del self.data[user[0]]
 
 	def add(self):
-		pass
+		self.form.show()
 
 	def __get_selected_user(self):
 		index = (self.page * Table.rows_per_page) + self.selected_row
@@ -132,6 +134,7 @@ class DeviceTable(Table):
 
 	def __init__(self):
 		Table.__init__(self)
+		self.form = DeviceForm()
 
 	def refresh_data(self):
 		self.data = get_device()
@@ -145,7 +148,7 @@ class DeviceTable(Table):
 				del self.data[user[0]]
 
 	def add(self):
-		pass
+		self.form.show()
 
 	def draw(self):
 		Table.draw(self)
