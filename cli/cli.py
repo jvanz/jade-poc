@@ -2,7 +2,6 @@ import curses
 import logging
 from screen import Screen
 
-
 def main(stdscr):
 	screen = Screen(stdscr)
 	while not screen.terminated:

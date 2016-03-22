@@ -21,7 +21,6 @@ class Screen:
 		self.menu = Menu(self, self.stdscr.getmaxyx()[0] * .20,
 			self.stdscr.getmaxyx()[1] * .10)
 		self.__center(self.menu.win)
-		self.table = Table(self)
 		self.show_menu()
 		self.__update()
 
@@ -41,13 +40,6 @@ class Screen:
 		else:
 			panel.top_panel().userptr().input_key(key)
 		self.__update()
-
-	def show_table(self, data_function, remove_function):
-		self.hide_menu()
-		self.table.data_function = data_function
-		self.table.remove_function = remove_function
-		self.table.refresh_data()
-		self.table.show()
 
 	def __update(self):
 		self.stdscr.clear()

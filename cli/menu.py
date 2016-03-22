@@ -1,6 +1,6 @@
 import curses
 from curses  import panel
-from api import get_user, get_device, delete_user, delete_device
+from table import UserTable, DeviceTable
 
 class Menu:
 	"""Class to handle the CLI menu"""
@@ -9,8 +9,8 @@ class Menu:
 		self.__screen = screen
 		self.win = curses.newwin(int(y), int(x), 0, 0)
 		self.win.box()
-		self.__options = [MenuItem("User", get_user, delete_user),
-				MenuItem("Devices", get_device, delete_device)]
+		self.__options = [MenuItem("User", UserTable()),
+				MenuItem("Devices", DeviceTable())]
 		self.__current_focus = 0
 		self.panel = panel.new_panel(self.win)
 		self.panel.set_userptr(self)
@@ -51,15 +51,13 @@ class Menu:
 			self.select(self.__current_focus-1)
 		elif curses.KEY_ENTER == key or 10 == key or 13 == key:
 			option = self.__options[self.__current_focus]
-			self.__screen.show_table(option.data_function,
-					option.remove_function)
+			self.hide()
+			option.table.show()
 
 class MenuItem:
 	"""Class to store menu items data"""
-
-	def __init__(self, text, fetch_data_function, remove_function):
+	def __init__(self, text, table):
 		self.text = text
 		self.focus = False
-		self.data_function = fetch_data_function
-		self.remove_function = remove_function
+		self.table = table
 
