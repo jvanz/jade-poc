@@ -2,13 +2,10 @@ import curses
 import logging
 from curses import panel
 from api import get_user, get_device, delete_user, delete_device
-from form import UserForm, DeviceForm
 
 class Table:
 	"""Class to handle a table to show data"""
 	rows_per_page = 50
-	add_key = ord("a")
-	edit_key = ord("e")
 	del_key = ord("d")
 
 	def __init__(self):
@@ -29,12 +26,6 @@ class Table:
 	def refresh_data(self):
 		pass
 
-	def delete_data(self):
-		pass
-
-	def add(self):
-		pass
-
 	def input_key(self, key):
 		"""Handles input keys while menu is the top panel in screen"""
 		if key is None:
@@ -51,10 +42,6 @@ class Table:
 		elif curses.KEY_RIGHT == key:
 			if self.page + 1 < self.total_pages:
 				self.page += 1
-		elif Table.add_key == key:
-			self.add()
-		elif Table.edit_key == key:
-			pass
 		elif Table.del_key == key:
 			self.delete()
 		if self.selected_row >=  len(self.data):
@@ -66,7 +53,7 @@ class Table:
 		self.win.box()
 		#add control line
 		line = 1
-		self.win.addstr(line, 2, "[a]dd\t[e]dit\t[d]elete")
+		self.win.addstr(line, 2, "[d]elete")
 		line += 2
 		if self.data is None or len(self.data) == 0:
 			return
@@ -104,7 +91,6 @@ class UserTable(Table):
 
 	def __init__(self):
 		Table.__init__(self)
-		self.form = UserForm()
 
 	def refresh_data(self):
 		self.data = get_user()
@@ -117,13 +103,6 @@ class UserTable(Table):
 			if delete_user(user[1]):
 				del self.data[user[0]]
 
-	def add(self):
-		self.form.show()
-
-	def __get_selected_user(self):
-		index = (self.page * Table.rows_per_page) + self.selected_row
-		return (index, self.data[index])
-
 	def draw(self):
 		Table.draw(self)
 
@@ -134,7 +113,6 @@ class DeviceTable(Table):
 
 	def __init__(self):
 		Table.__init__(self)
-		self.form = DeviceForm()
 
 	def refresh_data(self):
 		self.data = get_device()
@@ -146,9 +124,6 @@ class DeviceTable(Table):
 			user = Table.get_selected_row(self)
 			if delete_device(user[1]):
 				del self.data[user[0]]
-
-	def add(self):
-		self.form.show()
 
 	def draw(self):
 		Table.draw(self)

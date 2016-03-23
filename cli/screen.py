@@ -3,7 +3,6 @@ import logging
 from curses  import panel, textpad
 from table import Table
 from menu import Menu
-from form import Form
 
 class Screen:
 	"""Class to handle all screen stuff"""
