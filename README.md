@@ -3,11 +3,11 @@ Swagger and Jade proof of concept
 
 This repository contains 3 applications to make a proof of concept about how
 an web page and a CLI application can consume and interact with a backend
-throgo an API.
+through an API.
 
-As a proof of concept the application have not the goal to implement all the
-features and do not have any preoccupation with appearance. Maybe there are
-some bug... how knows? ;)
+As a proof of concept the application have not the goal to implement all features
+and do not have any preoccupation with appearance. Maybe there are
+some bug... who knows? ;)
 
 Applications
 -----------
@@ -22,13 +22,13 @@ YAML/JSON files and just implement the controller to handle the request
 ### Web
 
 In the `web` directory is find the web application. This web server is developed
-with Node.js, more specific using [expressjs](http://expressjs.com/) to make the
+with node.js, more specific using [expressjs](http://expressjs.com/) to make the
 request routing and [jade](http://jade-lang.com/) as template engine.
 
 ### CLI
 
 The `cli` folder there is a simple python application to fetch, show and delete
-data thought the API.
+data through the API.
 
 
 ### Running
@@ -45,7 +45,10 @@ containers. One running nginx, other the API app and another the web app.
 
 `docker-compose -f support/docker-compose.yml up -d`
 
-Once the three containers are up and running the web page will be disponible
+The `-d` flag is optional. However, if it is not present the terminal
+will be block
+
+Once the three containers are up and running the web page will be available
 at `http://localhost:8080`
 
 #### CLI
@@ -54,5 +57,3 @@ To run the CLI it necessary that the API is already running to avoid crashes.
 To run the CLI run:
 
 `python3 cli/cli.py`
-
-
