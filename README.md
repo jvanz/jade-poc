@@ -54,6 +54,7 @@ at `http://localhost:8080`
 #### CLI
 
 To run the CLI it necessary that the API is already running to avoid crashes.
+*As a curses app, CLI problably only works in Unix systems*
 To run the CLI run:
 
 `python3 cli/cli.py`
