@@ -23,15 +23,12 @@ class Table:
 		self.panel.top()
 		self.panel.show()
 
-	def refresh_data(self):
-		pass
-
 	def input_key(self, key):
 		"""Handles input keys while menu is the top panel in screen"""
 		if key is None:
 			return
 		if curses.KEY_DOWN == key:
-			if self.selected_row + 1 < Table.rows_per_page:
+			if self.selected_row + 1 < self.get_row_current_page():
 				self.selected_row +=  1
 		elif curses.KEY_UP == key:
 			if self.selected_row - 1 >= 0:
@@ -39,14 +36,23 @@ class Table:
 		if curses.KEY_LEFT == key:
 			if self.page - 1 >= 0:
 				self.page -= 1
+				self.selected_row = 0
 		elif curses.KEY_RIGHT == key:
 			if self.page + 1 < self.total_pages:
 				self.page += 1
+				self.selected_row = 0
 		elif Table.del_key == key:
-			self.delete()
-		if self.selected_row >=  len(self.data):
-			self.selected_row = len(self.data) - 1
+			if self.delete():
+				if self.selected_row >= self.get_row_current_page():
+					self.selected_row -= 1
+				if self.get_row_current_page() == 0 and self.page -1 >= 0:
+					self.page -= 1
+					self.selected_row = 0
 
+	def get_row_current_page(self):
+		first_line = self.page * Table.rows_per_page
+		last_line = first_line + Table.rows_per_page
+		return len(self.data[first_line: last_line])
 
 	def draw(self):
 		self.win.clear()
@@ -102,6 +108,7 @@ class UserTable(Table):
 			user = Table.get_selected_row(self)
 			if delete_user(user[1]):
 				del self.data[user[0]]
+				return True
 
 	def draw(self):
 		Table.draw(self)
@@ -124,6 +131,7 @@ class DeviceTable(Table):
 			user = Table.get_selected_row(self)
 			if delete_device(user[1]):
 				del self.data[user[0]]
+				return True
 
 	def draw(self):
 		Table.draw(self)
