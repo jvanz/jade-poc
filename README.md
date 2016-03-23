@@ -57,3 +57,12 @@ To run the CLI it necessary that the API is already running to avoid crashes.
 To run the CLI run:
 
 `python3 cli/cli.py`
+
+In the CLI app use the following key to navigate:
+
+* arrow-up: move in menu options and table row
+* arrow-down: move in menu options and table row
+* arrow-left: navigate in table pages
+* arrow-right: navigate in table pages
+* HOME: open menu
+* d: delete selected table row
