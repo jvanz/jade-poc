@@ -6,7 +6,7 @@ an web page and a CLI application can consume and interact with a backend
 through an API.
 
 As a proof of concept the application have not the goal to implement all features
-and do not have any preoccupation with appearance. Maybe there are
+and do not have preoccupation with appearance and performance. Maybe there are
 some bug... who knows? ;)
 
 Applications
